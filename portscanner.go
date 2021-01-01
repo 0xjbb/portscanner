@@ -26,7 +26,7 @@ func New(host string, ports string) PortScanner{
 }
 
 func (p *PortScanner) Run() error{
-	ports := p.ParsePorts()
+	ports := p.parsePorts()
 
 	if len(ports) == 0 {
 		return errors.New("no ports given")
@@ -43,7 +43,7 @@ func (p *PortScanner) Run() error{
 func (p *PortScanner) GetResults() []string {
 	return p.Results
 }
-func (p *PortScanner) ParsePorts() []string {
+func (p *PortScanner) parsePorts() []string {
 	if p.Ports == "all"{
 		return makeRange(0,65535)
 	}
@@ -95,20 +95,3 @@ func makeRange(start int, count int) []string{
 	}
 	return sli[start:]
 }
-
-/*
-func main(){
-
-	Scanner := New("127.0.0.2", "80,8080")
-
-	err := Scanner.Run()
-
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	for _,v := range Scanner.GetResults() {
-		fmt.Println("Open: ", v)
-	}
-}
-*/
