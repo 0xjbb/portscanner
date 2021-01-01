@@ -56,7 +56,7 @@ func (p PortScanner) ParsePorts() []string {
 
 	return rPorts
 }
-
+// helper functions
 // Just checks if the port is valid.
 func checkValidPort(port string) bool{
 	// How does this even work loool, love go <3
@@ -65,6 +65,8 @@ func checkValidPort(port string) bool{
 	}
 	return false
 }
+
+// why doesn't Go have this built-in ree
 func makeRange(start int, count int) []string{
 	sli := make([]string, count + 1)
 

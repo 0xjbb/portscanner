@@ -1,6 +1,6 @@
 # PortScanner Module
 
-This is a portscanner module for Go, I wrote this for another project i'm working on.
+This is a port scanner module for Go, I wrote this for another project i'm working on.
 
 ## Getting Started
 
