@@ -7,7 +7,9 @@ import (
 	"strconv"
 	"strings"
 )
-
+/*
+* @TODO Refactor to add concurrency, current version is just to get the module sorted for another project.
+ */
 type PortScanner struct{
 	Host string
 	Ports string
@@ -38,7 +40,6 @@ func (p PortScanner) Run() error{
 	return nil
 }
 
-func (p PortScanner) GetResults(){}
 func (p PortScanner) ParsePorts() []string {
 	if p.Ports == "all"{
 		return makeRange(0,65535)
