@@ -1,4 +1,4 @@
-package portscanner
+package main
 
 import (
 	"errors"
@@ -18,14 +18,14 @@ type PortScanner struct{
 	//Timeout int
 }
 
-func New(host string, ports string) *PortScanner{
-	return &PortScanner{
+func New(host string, ports string) PortScanner{
+	return PortScanner{
 		Host: host,
 		Ports: ports,
 	}
 }
 
-func (p PortScanner) Run() error{
+func (p *PortScanner) Run() error{
 	ports := p.ParsePorts()
 
 	if len(ports) == 0 {
@@ -40,7 +40,10 @@ func (p PortScanner) Run() error{
 	return nil
 }
 
-func (p PortScanner) ParsePorts() []string {
+func (p *PortScanner) GetResults() []string {
+	return p.Results
+}
+func (p *PortScanner) ParsePorts() []string {
 	if p.Ports == "all"{
 		return makeRange(0,65535)
 	}
@@ -50,7 +53,8 @@ func (p PortScanner) ParsePorts() []string {
 	var rPorts []string
 
 	for _,port := range ports {
-		if checkValidPort(port){
+
+		if checkValidPort(port) == true{
 			rPorts = append(rPorts, port)
 		}
 	}
@@ -58,13 +62,11 @@ func (p PortScanner) ParsePorts() []string {
 	return rPorts
 }
 
-func (p PortScanner) ConnectScan(port string){
+func (p *PortScanner) ConnectScan(port string){
 	address := fmt.Sprintf("%s:%s", p.Host, port)
-
 	conn, err := net.Dial("tcp", address)
 
 	if err != nil{
-		// not open
 		return
 	}
 
@@ -77,7 +79,9 @@ func (p PortScanner) ConnectScan(port string){
 // Just checks if the port is valid.
 func checkValidPort(port string) bool{
 	// How does this even work loool, love go <3
-	if port >= "0" && port <= "65535"{
+	p, _ := strconv.Atoi(port)
+
+	if p >= 0 && p <= 65535{
 		return true
 	}
 	return false
@@ -91,4 +95,19 @@ func makeRange(start int, count int) []string{
 		sli[i] = strconv.Itoa(i)
 	}
 	return sli[start:]
+}
+
+func main(){
+
+	test := New("127.0.0.2", "80,8080")
+
+	err := test.Run()
+
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	for _,v := range test.Results {
+		fmt.Println("Open: ", v)
+	}
 }
