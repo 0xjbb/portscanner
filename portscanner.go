@@ -1,6 +1,7 @@
 package portscanner
 
 import (
+	"errors"
 	"fmt"
 	"strconv"
 	"strings"
@@ -22,18 +23,19 @@ func New(host string, ports string) *PortScanner{
 }
 
 func (p PortScanner) Run() error{
-	ports, err := p.ParsePorts()
+	ports := p.ParsePorts()
 
-	if err != nil{
-		return err
+	if len(ports) == 0 {
+		return errors.New("no ports given")
 	}
 
 	// scan ports
 	for _, val := range ports{
 		fmt.Println(val)
 
-
 	}
+
+	return nil
 }
 
 func (p PortScanner) GetResults(){}
