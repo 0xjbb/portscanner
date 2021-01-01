@@ -1,4 +1,4 @@
-package main
+package portscanner
 
 import (
 	"errors"
@@ -34,7 +34,7 @@ func (p *PortScanner) Run() error{
 
 	// scan ports
 	for _, val := range ports{
-		p.ConnectScan(val)
+		p.connectScan(val)
 	}
 
 	return nil
@@ -61,8 +61,7 @@ func (p *PortScanner) ParsePorts() []string {
 
 	return rPorts
 }
-
-func (p *PortScanner) ConnectScan(port string){
+func (p *PortScanner) connectScan(port string){
 	address := fmt.Sprintf("%s:%s", p.Host, port)
 	conn, err := net.Dial("tcp", address)
 
@@ -97,17 +96,19 @@ func makeRange(start int, count int) []string{
 	return sli[start:]
 }
 
+/*
 func main(){
 
-	test := New("127.0.0.2", "80,8080")
+	Scanner := New("127.0.0.2", "80,8080")
 
-	err := test.Run()
+	err := Scanner.Run()
 
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	for _,v := range test.Results {
+	for _,v := range Scanner.GetResults() {
 		fmt.Println("Open: ", v)
 	}
 }
+*/
