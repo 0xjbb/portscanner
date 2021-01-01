@@ -3,6 +3,7 @@ package portscanner
 import (
 	"errors"
 	"fmt"
+	"net"
 	"strconv"
 	"strings"
 )
@@ -10,9 +11,9 @@ import (
 type PortScanner struct{
 	Host string
 	Ports string
+	Results []string
 	//Type string // null/syn/connect
 	//Timeout int
-
 }
 
 func New(host string, ports string) *PortScanner{
@@ -31,8 +32,7 @@ func (p PortScanner) Run() error{
 
 	// scan ports
 	for _, val := range ports{
-		fmt.Println(val)
-
+		p.ConnectScan(val)
 	}
 
 	return nil
@@ -56,6 +56,22 @@ func (p PortScanner) ParsePorts() []string {
 
 	return rPorts
 }
+
+func (p PortScanner) ConnectScan(port string){
+	address := fmt.Sprintf("%s:%s", p.Host, port)
+
+	conn, err := net.Dial("tcp", address)
+
+	if err != nil{
+		// not open
+		return
+	}
+
+	_ = conn.Close()
+
+	p.Results = append(p.Results, port)
+}
+
 // helper functions
 // Just checks if the port is valid.
 func checkValidPort(port string) bool{
