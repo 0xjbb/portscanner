@@ -1,6 +1,7 @@
 # PortScanner Module
 
 This is a port scanner module for Go, I wrote this for another project I'm working on.
+Still have a lot to do but this is a very early basic version.
 
 ## Getting Started
 
