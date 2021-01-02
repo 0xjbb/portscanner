@@ -4,16 +4,19 @@ This is a port scanner module for Go, I wrote this for another project i'm worki
 
 ## Getting Started
 
+### Installation
 
+This assumes you already have a working Go environment, if not please see
+[this page](https://golang.org/doc/install) first.
 
-### Installation and Usage
-
+```sh
+go get github.com/0xjbb/scyllago
+```
 
 ### Examples 
 
 ```go
 func main(){
-
 	Scanner := portscanner.New("127.0.0.2", "80,8080")
 
 	err := Scanner.Run()

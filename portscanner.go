@@ -43,6 +43,7 @@ func (p *PortScanner) Run() error{
 func (p *PortScanner) GetResults() []string {
 	return p.Results
 }
+
 func (p *PortScanner) parsePorts() []string {
 	if p.Ports == "all"{
 		return makeRange(0,65535)
@@ -53,7 +54,6 @@ func (p *PortScanner) parsePorts() []string {
 	var rPorts []string
 
 	for _,port := range ports {
-
 		if checkValidPort(port) == true{
 			rPorts = append(rPorts, port)
 		}
@@ -61,6 +61,7 @@ func (p *PortScanner) parsePorts() []string {
 
 	return rPorts
 }
+
 func (p *PortScanner) connectScan(port string){
 	address := fmt.Sprintf("%s:%s", p.Host, port)
 	conn, err := net.Dial("tcp", address)
