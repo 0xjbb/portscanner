@@ -1,6 +1,6 @@
 # PortScanner Module
 
-This is a port scanner module for Go, I wrote this for another project i'm working on.
+This is a port scanner module for Go, I wrote this for another project I'm working on.
 
 ## Getting Started
 
@@ -10,7 +10,7 @@ This assumes you already have a working Go environment, if not please see
 [this page](https://golang.org/doc/install) first.
 
 ```sh
-go get github.com/0xjbb/scyllago
+go get github.com/0xjbb/portscanner
 ```
 
 ### Examples 
