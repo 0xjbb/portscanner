@@ -18,7 +18,10 @@ go get github.com/0xjbb/portscanner
 
 ```go
 func main(){
-	Scanner := portscanner.New("127.0.0.2", "80,8080")
+	
+	ports := []int{1,2,3,4,5,6,7,8,9}
+
+	Scanner := portscanner.New("127.0.0.1", ports)
 
 	err := Scanner.Run()
 

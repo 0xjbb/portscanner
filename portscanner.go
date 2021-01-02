@@ -4,21 +4,19 @@ import (
 	"errors"
 	"fmt"
 	"net"
-	"strconv"
-	"strings"
 )
 /*
 * @TODO Refactor to add concurrency, current version is just to get the module sorted for another project.
  */
 type PortScanner struct{
 	Host string
-	Ports string
-	Results []string
+	Ports []int
+	Results []int
 	//Type string // null/syn/connect
 	//Timeout int
 }
 
-func New(host string, ports string) PortScanner{
+func New(host string, ports []int) PortScanner{
 	return PortScanner{
 		Host: host,
 		Ports: ports,
@@ -26,44 +24,28 @@ func New(host string, ports string) PortScanner{
 }
 
 func (p *PortScanner) Run() error{
-	ports := p.parsePorts()
 
-	if len(ports) == 0 {
+	if len(p.Ports) == 0 {
 		return errors.New("no ports given")
 	}
 
 	// scan ports
-	for _, val := range ports{
-		p.connectScan(val)
+	for _, port := range p.Ports{
+		// switch p.Type{}
+		if checkValidPort(port){
+			p.connectScan(port)
+		}
 	}
 
 	return nil
 }
 
-func (p *PortScanner) GetResults() []string {
+func (p *PortScanner) GetResults() []int {
 	return p.Results
 }
 
-func (p *PortScanner) parsePorts() []string {
-	if p.Ports == "all"{
-		return makeRange(0,65535)
-	}
-
-	ports := strings.Split(p.Ports, ",") // parse comma separated.
-
-	var rPorts []string
-
-	for _,port := range ports {
-		if checkValidPort(port) == true{
-			rPorts = append(rPorts, port)
-		}
-	}
-
-	return rPorts
-}
-
-func (p *PortScanner) connectScan(port string){
-	address := fmt.Sprintf("%s:%s", p.Host, port)
+func (p *PortScanner) connectScan(port int){
+	address := fmt.Sprintf("%s:%d", p.Host, port)
 	conn, err := net.Dial("tcp", address)
 
 	if err != nil{
@@ -77,22 +59,9 @@ func (p *PortScanner) connectScan(port string){
 
 // helper functions
 // Just checks if the port is valid.
-func checkValidPort(port string) bool{
-	// How does this even work loool, love go <3
-	p, _ := strconv.Atoi(port)
-
-	if p >= 0 && p <= 65535{
+func checkValidPort(port int) bool{
+	if port >= 0 && port <= 65535{
 		return true
 	}
 	return false
-}
-
-// why doesn't Go have this built-in ree
-func makeRange(start int, count int) []string{
-	sli := make([]string, count + 1)
-
-	for i := start; i <= count;i++ {
-		sli[i] = strconv.Itoa(i)
-	}
-	return sli[start:]
 }
